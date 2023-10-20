@@ -73,6 +73,7 @@ class filerm:
 print("OS: " + filerm.getOS("os-name"))
 print("Kernel Version: " + filerm.getOS("kernel"))
 print("Default Shell: " + filerm.getOS("shell"))
+print("Desktop Environment: " + filerm.getOS("desktop-env"))
 print("CPU: " + filerm.ReadCPU())
 print("GPU: " + filerm.ReadGPU())
 print("RAM (KB): " + filerm.ReadMemory("kb"))
