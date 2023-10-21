@@ -32,7 +32,11 @@ class filerm:
                     return re.sub('Shell*.', "", line, 1)
             else:
                 return de_data
-
+        
+        elif prp == "window-mngr":
+            wm = "echo ${XDG_SESSION_TYPE}"
+            wm_data = subprocess.check_output(wm, shell=True).decode().strip()
+            return wm_data
 
     def ReadCPU():
         if platform.system() == "Windows":
