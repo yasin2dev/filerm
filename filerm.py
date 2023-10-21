@@ -4,6 +4,12 @@ import psutil
 class filerm:
     system = platform.system()
     def getOS(prp: str):
+        
+        ## DESKTOP ENVIRONMENT
+        de = "echo ${XDG_CURRENT_DESKTOP}"
+        de_data = subprocess.check_output(de, shell=True).decode().strip()
+        ##
+        
         command = "cat /etc/os-release"
         data = subprocess.check_output(command, shell=True).decode().strip()
         if prp == "os-name":
@@ -23,8 +29,6 @@ class filerm:
             return os.environ["SHELL"] + " " + version
         
         elif prp == "desktop-env":
-            de = "echo ${XDG_CURRENT_DESKTOP}"
-            de_data = subprocess.check_output(de, shell=True).decode().strip()
             if de_data == "GNOME": 
                 command = "gnome-shell --version"
                 data = subprocess.check_output(command, shell=True).decode().strip()
@@ -37,6 +41,12 @@ class filerm:
             wm = "echo ${XDG_SESSION_TYPE}"
             wm_data = subprocess.check_output(wm, shell=True).decode().strip()
             return wm_data
+
+        if de_data == "GNOME": 
+            if prp == "gnome-theme":
+                command = "gsettings get org.gnome.desktop.interface gtk-theme" 
+                theme_data = subprocess.check_output(command, shell=True).decode().strip() 
+                return theme_data.replace("'", "")
 
     def ReadCPU():
         if platform.system() == "Windows":
@@ -84,6 +94,7 @@ print("Kernel Version: " + filerm.getOS("kernel"))
 print("Default Shell: " + filerm.getOS("shell"))
 print("Desktop Environment: " + filerm.getOS("desktop-env"))
 print("Window Manager: " + filerm.getOS("window-mngr").capitalize())
+print("Theme: " + filerm.getOS("gnome-theme"))
 print("CPU: " + filerm.ReadCPU())
 print("GPU: " + filerm.ReadGPU())
 print("RAM (KB): " + filerm.ReadMemory("kb"))
