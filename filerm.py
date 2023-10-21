@@ -47,6 +47,8 @@ class filerm:
                 command = "gsettings get org.gnome.desktop.interface gtk-theme" 
                 theme_data = subprocess.check_output(command, shell=True).decode().strip() 
                 return theme_data.replace("'", "")
+        else:
+            pass #TODO
 
     def ReadCPU():
         if platform.system() == "Windows":
