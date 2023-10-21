@@ -23,10 +23,15 @@ class filerm:
             return os.environ["SHELL"] + " " + version
         
         elif prp == "desktop-env":
-            command = "echo ${XDG_CURRENT_DESKTOP}"
-            data = subprocess.check_output(command, shell=True).decode().strip()
-            for line in data.split("\n"):
-                return line
+            de = "echo ${XDG_CURRENT_DESKTOP}"
+            de_data = subprocess.check_output(de, shell=True).decode().strip()
+            if de_data == "GNOME": 
+                command = "gnome-shell --version"
+                data = subprocess.check_output(command, shell=True).decode().strip()
+                for line in data.split("\n"):
+                    return re.sub('Shell*.', "", line, 1)
+            else:
+                return de_data
 
 
     def ReadCPU():
