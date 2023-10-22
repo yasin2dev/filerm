@@ -83,6 +83,10 @@ class filerm:
             return str(round(memory.total / 1024.0 **2)) + " MB"
         elif size == "gb":
             return str(round(memory.total / 1024.0 **3)) + " GB"
+        
+    def CurrentRam():
+        memory = psutil.virtual_memory()
+        return str(round(memory.active / 1024.0 **2)) + " MB"
     
     def ReadDisk():
         disk = psutil.disk_usage("/")
@@ -99,6 +103,7 @@ print("Window Manager: " + filerm.getOS("window-mngr").capitalize())
 print("Theme: " + filerm.getOS("gnome-theme"))
 print("CPU: " + filerm.ReadCPU())
 print("GPU: " + filerm.ReadGPU())
+print("Memory: " + str(filerm.CurrentRam()) + " / " + filerm.ReadMemory("mb"))
 print("RAM (KB): " + filerm.ReadMemory("kb"))
 print("RAM (MB): " + filerm.ReadMemory("mb"))
 print("RAM (GB): " + filerm.ReadMemory("gb"))
