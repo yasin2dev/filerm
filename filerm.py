@@ -128,6 +128,20 @@ class filerm:
         return str(round(disk.total / 1024.0 **3)) + " GB"
 
 
+class filermFile:
+
+    def TruncateFile(fileDir: str):
+        with open(fileDir, "w+") as f:
+            f.truncate(0)
+            f.close()
+
+    def CreateFile(fileName: str):
+        if os.path.isfile(fileName):
+            print("File exist.")
+            pass
+        else: 
+            open(fileName, "w+").close()
+
 # Example of Usage
 
 print("OS: " + filerm.getOS("os-name"))
@@ -143,3 +157,6 @@ print("Disk Size: " + filerm.ReadDisk())
 print("RAM (KB): " + filerm.ReadMemory("kb"))
 print("RAM (MB): " + filerm.ReadMemory("mb"))
 print("RAM (GB): " + filerm.ReadMemory("gb"))
+
+filermFile.CreateFile("created_file.txt")
+filermFile.TruncateFile("truncate_file.txt")
