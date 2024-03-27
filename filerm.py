@@ -114,21 +114,67 @@ class filermFile:
         else: 
             open(fileName, "w+").close()
 
+
+class filermWindows:
+    def getOs(prp: str):
+        if prp == "os-name":
+            return platform.win32_ver()[0]
+        elif prp == "version":
+            return platform.win32_ver()[1]
+        
+    def ReadMemory(size: str):
+        memory = psutil.virtual_memory()
+        if size == "kb":
+            return str(round(memory.total / 1024.0))
+        elif size == "mb":
+            return str(round(memory.total / 1024.0 **2))
+        elif size == "gb":
+            return str(round(memory.total / 1024.0 **3))
+
+    def ReadDisk():
+        disk = psutil.disk_usage("/")
+        return str(round(disk.total / 1024.0 **3)) + " GB"
+
+    def ReadGPU():
+        gpu = subprocess.check_output('wmic path win32_VideoController get name')
+        return str(gpu).replace("b'Name", "").replace("\\r", "").replace("\\n", "").replace("'", "").strip()
+    
+    def ReadCPU():
+        if platform.system() == "Windows":
+            cpu = subprocess.check_output("wmic cpu get name")
+            return str(cpu).replace("b'Name", "").replace("\\r", "").replace("\\n", "").replace("'", "").strip()
+    
 # Example of Usage
 
-print("OS: " + filerm.getOS("os-name"))
-print("Kernel Version: " + filerm.getOS("kernel"))
-print("Default Shell: " + filerm.getOS("shell"))
-print("Desktop Environment: " + filerm.getOS("desktop-env"))
-print("Window Manager: " + filerm.getOS("window-mngr").capitalize())
-print("Theme: " + filerm.ReadTheme())
-print("CPU: " + filerm.ReadCPU())
-print("GPU: " + filerm.ReadGPU())
-print("Memory: " + str(filerm.CurrentRam()) + " / " + filerm.ReadMemory("mb"))
-print("Disk Size: " + filerm.ReadDisk())
-print("RAM (KB): " + filerm.ReadMemory("kb"))
-print("RAM (MB): " + filerm.ReadMemory("mb"))
-print("RAM (GB): " + filerm.ReadMemory("gb"))
+if platform.system() == "Linux":
+    print("OS: " + filerm.getOS("os-name"))
+    print("Kernel Version: " + filerm.getOS("kernel"))
+    print("Default Shell: " + filerm.getOS("shell"))
+    print("Desktop Environment: " + filerm.getOS("desktop-env"))
+    print("Window Manager: " + filerm.getOS("window-mngr").capitalize())
+    print("Theme: " + filerm.ReadTheme())
+    print("CPU: " + filerm.ReadCPU())
+    print("GPU: " + filerm.ReadGPU())
+    print("Memory: " + str(filerm.CurrentRam()) + " / " + filerm.ReadMemory("mb"))
+    print("Disk Size: " + filerm.ReadDisk())
+    print("RAM (KB): " + filerm.ReadMemory("kb"))
+    print("RAM (MB): " + filerm.ReadMemory("mb"))
+    print("RAM (GB): " + filerm.ReadMemory("gb"))
+
+# Example of Usage for Windows
+
+elif platform.system() == "Windows":
+    print("OS: Windows " + filermWindows.getOs("os-name"))
+    print("Version: " + filermWindows.getOs("version"))
+    print("CPU: " + filermWindows.ReadCPU())
+    print("GPU: " + filermWindows.ReadGPU())
+    print("Disk Size: " + filermWindows.ReadDisk())
+    print("RAM (KB): " + filermWindows.ReadMemory("kb") + " KB")
+    print("RAM (MB): " + filermWindows.ReadMemory("mb") + " MB")
+    print("RAM (GB): " + filermWindows.ReadMemory("gb") + " GB")
+
+
+# Common operations
 
 filermFile.CreateFile("created_file.txt")
 filermFile.TruncateFile("truncate_file.txt")
